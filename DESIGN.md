@@ -67,3 +67,25 @@ https://stackoverflow.com/questions/3952882/how-rss-and-atom-inform-client-about
 
 if they offer a way to query by date, some internal mechanism will be required
 to stored commited elements.
+
+### 5. Handling in-progress async request/response
+
+In order to support Async Request/Response incoming requests should produce a stream of events of 
+in-progress requests.
+
+This in-progress request stream has to be used to validate timeouts on responses.
+
+```
+( requests )--->[ proxy ]--->[ service ]
+
+[ service ]--->[ proxy ]--->( in-progress requests )
+
+( in-progress request )--->[ service ]--->( local-state )
+
+// if response received, clean state and publish results
+[ service ]--->[ proxy ]-+->( local-state )
+                         +->( results)
+
+// if local state report timeout
+( local-state )--->[ service ]--->( results )
+```
