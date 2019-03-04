@@ -75,19 +75,26 @@ in-progress requests.
 
 This in-progress request stream has to be used to validate timeouts on responses.
 
+**Processing requests**
 ```
 ( requests )--->[ proxy ]--->[ service ]
 
 [ service ]--->[ proxy ]--->( in-progress requests )
 
 ( in-progress request )--->[ service ]--->( in-progress-state )
+```
 
+**Handling responses**
+```
 // if response received, record it
 [ service ]--->[ proxy ]--->( response )
 
 // if local state report timeout
 ( in-progress-state )--->[ proxy ]--->( response )
+```
 
+**Publish results**
+```
 // if no results, publish result, remove in-progress
 ( response )--->[ proxy ]-----+->( result )
             ( result-state )  +->( in-progress-state )
