@@ -95,11 +95,11 @@ This in-progress request stream has to be used to validate timeouts on responses
 
 **Publish results**
 ```
-// if no results, publish result, remove in-progress
+// if no results stored, publish result to the outside, remove in-progress state 
 ( response )--->[ proxy ]-----+->( result )
             ( result-state )  +->( in-progress-state )
 
-// if results, publish result, remove in-progress, and log
+// if results in local store exist, log came-late response 
 ( response )--->[ proxy ]-----+->( log )
             ( result-state )
 ```
