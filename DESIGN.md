@@ -80,12 +80,19 @@ This in-progress request stream has to be used to validate timeouts on responses
 
 [ service ]--->[ proxy ]--->( in-progress requests )
 
-( in-progress request )--->[ service ]--->( local-state )
+( in-progress request )--->[ service ]--->( in-progress-state )
 
-// if response received, clean state and publish results
-[ service ]--->[ proxy ]-+->( local-state )
-                         +->( results)
+// if response received, record it
+[ service ]--->[ proxy ]--->( response )
 
 // if local state report timeout
-( local-state )--->[ service ]--->( results )
+( in-progress-state )--->[ proxy ]--->( response )
+
+// if no results, publish result, remove in-progress
+( response )--->[ proxy ]-----+->( result )
+            ( result-state )  +->( in-progress-state )
+
+// if results, publish result, remove in-progress, and log
+( response )--->[ proxy ]-----+->( log )
+            ( result-state )
 ```
