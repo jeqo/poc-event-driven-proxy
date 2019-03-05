@@ -3,6 +3,7 @@ package io.github.jeqo.poc;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Properties;
+import no.sysco.middleware.kafka.util.StreamsTopologyGraphviz;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
@@ -148,6 +149,9 @@ public class App {
         .foreach((key, value) -> System.out.printf("Result %s=>%s%n", key, value));
 
     var topology = builder.build();
+
+    // Print out topology graph
+    LOGGER.info(StreamsTopologyGraphviz.print(topology));
 
     // Kafka Streams configuration
     var streamsConfig = new Properties();

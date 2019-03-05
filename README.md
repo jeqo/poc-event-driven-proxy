@@ -4,6 +4,10 @@
 
 [Here](DESIGN.md)
 
+## Implementation
+
+![](docs/topology.png)
+
 ## How to run
 
 1. Start Docker Compose: `make docker-up`
