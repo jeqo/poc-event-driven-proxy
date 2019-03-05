@@ -158,6 +158,7 @@ public class App {
 
     var streams = new KafkaStreams(topology, streamsConfig);
 
+    streams.cleanUp();
     streams.start();
 
     Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
