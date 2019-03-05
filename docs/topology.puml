@@ -1,0 +1,71 @@
+@startuml
+digraph G {
+	graph [labelloc=top,label="kafka-streams topology",fontname="Verdana",fontsize=12];
+	edge [fontname="Verdana",fontsize=9,labelfontname="Verdana",labelfontsize=9];
+	node [fontname="Verdana",fontsize=9,shape=record];
+subgraph cluster_c10 {
+label = "Sub-Topology: 1";
+	c1 [label="Topic: in_progress"]
+	// null
+	c1 -> c11 [];
+	c11 [label="Source: KSTREAM-SOURCE-0000000003"]
+	c12 [label="Source: KSTREAM-SOURCE-0000000006"]
+	c13 [label="Processor: KSTREAM-TRANSFORM-0000000004"]
+	// null
+	c13 -> c4 [];
+	// null
+	c11 -> c13 [];
+	c14 [label="Processor: KSTREAM-TRANSFORM-0000000007"]
+	// null
+	c12 -> c14 [];
+	// null
+	c14 -> c5 [];
+	// null
+	c14 -> c4 [];
+	c15 [label="Sink: KSTREAM-SINK-0000000005"]
+	// null
+	c13 -> c15 [];
+	// null
+	c15 -> c2 [];
+	c16 [label="Sink: KSTREAM-SINK-0000000008"]
+	// null
+	c16 -> c3 [];
+	// null
+	c14 -> c16 [];
+	c2 [label="Topic: responses"]
+	// null
+	c2 -> c12 [];
+}
+subgraph cluster_c17 {
+label = "Sub-Topology: 2";
+	c18 [label="Source: KSTREAM-SOURCE-0000000009"]
+	c19 [label="Processor: KSTREAM-FOREACH-0000000010"]
+	// null
+	c18 -> c19 [];
+	c3 [label="Topic: results"]
+	// null
+	c3 -> c18 [];
+}
+subgraph cluster_c6 {
+label = "Sub-Topology: 0";
+	c0 [label="Topic: requests"]
+	// null
+	c0 -> c7 [];
+	c7 [label="Source: KSTREAM-SOURCE-0000000000"]
+	c8 [label="Processor: KSTREAM-MAP-0000000001"]
+	// null
+	c7 -> c8 [];
+	c9 [label="Sink: KSTREAM-SINK-0000000002"]
+	// null
+	c8 -> c9 [];
+	// null
+	c9 -> c1 [];
+}
+	c0 [label="Topic: requests", shape=cds]
+	c1 [label="Topic: in_progress", shape=cds]
+	c2 [label="Topic: responses", shape=cds]
+	c3 [label="Topic: results", shape=cds]
+	c4 [label="Store: in_progress", shape=box3d]
+	c5 [label="Store: results", shape=box3d]
+}
+@enduml
